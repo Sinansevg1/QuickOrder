@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SignalR.BusinessLayer.Abstract;
 using SignalR.DtoLayer.DiscountDto;
-using SignalR.EntiyLayer.Entities;
+using SignalR.EntityLayer.Entities;
 using AutoMapper;
 namespace SignalRApi.Controllers
 {

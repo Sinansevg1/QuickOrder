@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using SignalR.BusinessLayer.Abstract;
 using SignalR.DataAccessLayer.concrete;
 using SignalR.DtoLayer.ProductDto;
-using SignalR.EntiyLayer.Entities;
+using SignalR.EntityLayer.Entities;
 using SignalR.DtoLayer.CategoryDto;
 
 namespace SignalRApi.Controllers
