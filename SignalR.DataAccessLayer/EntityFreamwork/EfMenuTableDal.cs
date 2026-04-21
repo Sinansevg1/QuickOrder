@@ -10,6 +10,12 @@ namespace SignalR.DataAccessLayer.EntityFreamwork
         public EfMenuTableDal(SignalRContext context) : base(context)
         {
         }
+
+        public int MenuTableCount()
+        {
+            using var context = new SignalRContext();
+            return context.MenuTables.Count();
+        }
     }
 }
 
