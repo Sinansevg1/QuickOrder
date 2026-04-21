@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SignalR.EntityLayer.Entities;
 using SignalR.EntiyLayer.Entities;
 
-namespace SignalR.DataAccessLayer.Concrete
+namespace SignalR.DataAccessLayer.concrete
 {
     public class SignalRContext : IdentityDbContext<AppUser, AppRole, int>
     {
