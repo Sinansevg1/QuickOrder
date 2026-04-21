@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <Reference Include="QRCoder">
-      <HintPath>..\\..\\..\\..\\QRCoder.dll</HintPath>
+      <HintPath>C:\\Users\\SS\\Desktop\\QRCoder.dll</HintPath>
     </Reference>
   </ItemGroup>
 
