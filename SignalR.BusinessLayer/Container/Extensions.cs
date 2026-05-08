@@ -1,8 +1,13 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SignalR.BusinessLayer.Abstract;
 using SignalR.BusinessLayer.Concrete;
 using SignalR.DataAccessLayer.Abstract;
 using SignalR.DataAccessLayer.EntityFreamwork;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SignalR.BusinessLayer.Container
 {
@@ -63,4 +68,3 @@ namespace SignalR.BusinessLayer.Container
         }
     }
 }
-

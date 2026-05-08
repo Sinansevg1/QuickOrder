@@ -273,3 +273,6 @@ C:\Users\SS\Desktop\QuickOrder\SignalRApi\bin\Debug\net8.0\SignalRApi.runtimecon
 C:\Users\SS\Desktop\QuickOrder\SignalRApi\obj\Debug\net8.0\SignalRApi.csproj.Up2Date
 C:\Users\SS\Desktop\QuickOrder\SignalRApi\obj\Debug\net8.0\SignalRApi.genruntimeconfig.cache
 C:\Users\SS\Desktop\QuickOrder\SignalRApi\obj\Debug\net8.0\ref\SignalRApi.dll
+C:\Users\SS\Desktop\QuickOrder\SignalRApi\bin\Debug\net8.0\FluentValidation.dll
+C:\Users\SS\Desktop\QuickOrder\SignalRApi\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
+C:\Users\SS\Desktop\QuickOrder\SignalRApi\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll

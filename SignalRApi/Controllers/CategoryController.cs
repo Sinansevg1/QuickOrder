@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SignalR.BusinessLayer.Abstract;
@@ -47,42 +47,35 @@ namespace SignalRApi.Controllers
         [HttpPost]
         public IActionResult CreateCategory(CreateCategoryDto createCategoryDto)
         {
-            _categoryService.TAdd(new Category()
-            {
-                CategoryName = createCategoryDto.CategoryName,
-                Status = true
-
-            });
+            createCategoryDto.CategoryStatus = true;
+            var value = _mapper.Map<Category>(createCategoryDto);
+            _categoryService.TAdd(value);
             return Ok("Kategori Eklendi");
         }
         [HttpDelete("{id}")]
         public IActionResult DeleteCategory(int id)
         {
-
-            var value = _categoryService.TGetByID(id);
+            
+          var value=  _categoryService.TGetByID( id);
             _categoryService.TDelete(value);
             return Ok("Kategori Silindi");
         }
         [HttpGet("{id}")]
         public IActionResult GetCategory(int id)
         {
-            var value = _categoryService.TGetByID(id);
-
+          var value = _categoryService.TGetByID(id);
+           
             return Ok(value);
         }
         [HttpPut]
         public IActionResult UpdateCategory(UpdateCategoryDto updateCategoryDto)
         {
-            _categoryService.TUpdate(new Category()
-            {
-                CategoryName = updateCategoryDto.CategoryName,
-                CategoryID = updateCategoryDto.CategoryID,
-                Status = updateCategoryDto.CategoryStatus
-
-            });
+            var value = _mapper.Map<Category>(updateCategoryDto);
+            _categoryService.TUpdate(value);
             return Ok("Kategori Güncellendi");
         }
 
     }
-}
 
+   
+}

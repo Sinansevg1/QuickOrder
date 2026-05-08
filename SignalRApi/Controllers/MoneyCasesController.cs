@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SignalR.BusinessLayer.Abstract;
 
@@ -16,9 +16,8 @@ namespace SignalRApi.Controllers
         }
         [HttpGet]
         public IActionResult TotalMoneyCaseAmount()
-        {
+        { 
             return Ok(_moneyCaseService.TTotalMoneyCaseAmount());
         }
     }
 }
-

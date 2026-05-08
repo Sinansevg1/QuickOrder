@@ -1,4 +1,4 @@
-namespace SignalR.EntityLayer.Entities
+﻿namespace SignalR.EntityLayer.Entities
 {
     public class About
     {

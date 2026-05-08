@@ -1,3 +1,4 @@
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SignalR.BusinessLayer.Abstract;
@@ -11,16 +12,18 @@ namespace SignalRApi.Controllers
     public class NotificationController : ControllerBase
     {
         private readonly INotificationService _notificationService;
+        private readonly IMapper _mapper;
 
-        public NotificationController(INotificationService notificationService)
+        public NotificationController(INotificationService notificationService, IMapper mapper)
         {
             _notificationService = notificationService;
+            _mapper = mapper;
         }
         [HttpGet]
         public IActionResult NotificationList()
         {
-
-            return Ok(_notificationService.TGetListAll());
+            var values = _notificationService.TGetListAll();
+            return Ok(_mapper.Map<List<ResultNotificationDto>>(values));
         }
         [HttpGet("NotificationCountByStatusFalse")]
         public IActionResult NotificationCountByStatusFalse()
@@ -35,15 +38,10 @@ namespace SignalRApi.Controllers
         [HttpPost]
         public IActionResult CreateNotification(CreateNotificationDto createNotificationDto)
         {
-            Notification notification = new Notification()
-            {
-                Type = createNotificationDto.Type,
-                Icon = createNotificationDto.Icon,
-                Description = createNotificationDto.Description,
-                Date = Convert.ToDateTime(DateTime.Now.ToShortDateString()),
-                Status = false,
-            };
-            _notificationService.TAdd(notification);
+            createNotificationDto.Status = false;
+            createNotificationDto.Date = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+            var value = _mapper.Map<Notification>(createNotificationDto);
+            _notificationService.TAdd(value);
             return Ok("Ekleme işlemi başarıyla yapıldı");
         }
         [HttpDelete("{id}")]
@@ -56,21 +54,14 @@ namespace SignalRApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetNotification(int id)
         {
-            return Ok(_notificationService.TGetByID(id));
+            var value = _notificationService.TGetByID(id);
+            return Ok(_mapper.Map<GetByIdNotificationDto>(value));
         }
         [HttpPut]
         public IActionResult UpdateNotification(UpdateNotificationDto updateNotificationDto)
         {
-            Notification notification = new Notification()
-            {
-                NotificationID = updateNotificationDto.NotificationID,
-                Type = updateNotificationDto.Type,
-                Icon = updateNotificationDto.Icon,
-                Description = updateNotificationDto.Description,
-                Date = updateNotificationDto.Date,
-                Status = updateNotificationDto.Status,
-            };
-            _notificationService.TUpdate(notification);
+            var value = _mapper.Map<Notification>(updateNotificationDto);
+            _notificationService.TUpdate(value);
             return Ok("Güncelleme işlemi başarıyla yapıldı");
         }
         [HttpGet("NotificationStatusChangeToFalse/{id}")]
@@ -87,4 +78,3 @@ namespace SignalRApi.Controllers
         }
     }
 }
-

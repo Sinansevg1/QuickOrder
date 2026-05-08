@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SignalR.BusinessLayer.Abstract;
@@ -27,7 +27,7 @@ namespace SignalRApi.Controllers
         [HttpGet("BasketListBtByMenuTablewithProductName")]
         public IActionResult GetBasketListBtByMenuTablewithProductName(int id)
         {
-            using var context = new SignalRContext();
+           using var context=new SignalRContext();
             var values = context.Baskets.Include(x => x.Product).Where(y => y.MenuTableID == id).Select(z => new ResultBasketListWithProducts
             {
                 BasketID = z.BasketID,
@@ -36,7 +36,7 @@ namespace SignalRApi.Controllers
                 Price = z.Price,
                 ProductID = z.ProductID,
                 TotalPrice = z.TotalPrice,
-                ProductName = z.Product.ProductName
+                ProductName = z.Product.ProductName 
             }).ToList();
             return Ok(values);
         }
@@ -46,16 +46,16 @@ namespace SignalRApi.Controllers
             using var context = new SignalRContext();
             _basketService.TAdd(new Basket()
             {
-                ProductID = createBasketDto.ProductID,
+                ProductID= createBasketDto.ProductID,
+                MenuTableID = createBasketDto.MenuTableID,
                 Count = 1,
-                MenuTableID = 4,
                 Price = context.Products.Where(x => x.ProductID == createBasketDto.ProductID).Select(y => y.Price).FirstOrDefault(),
-                TotalPrice = 0,
+                TotalPrice=createBasketDto.TotalPrice,
             });
             return Ok();
         }
         [HttpDelete("{id}")]
-        public IActionResult DeleteBasket(int id)
+        public IActionResult DeleteBasket(int id) 
         {
             var value = _basketService.TGetByID(id);
             _basketService.TDelete(value);
@@ -63,4 +63,3 @@ namespace SignalRApi.Controllers
         }
     }
 }
-

@@ -1,7 +1,12 @@
-using SignalR.DataAccessLayer.Abstract;
+﻿using SignalR.DataAccessLayer.Abstract;
 using SignalR.DataAccessLayer.concrete;
 using SignalR.DataAccessLayer.Repositories;
 using SignalR.EntityLayer.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SignalR.DataAccessLayer.EntityFreamwork
 {
@@ -11,6 +16,22 @@ namespace SignalR.DataAccessLayer.EntityFreamwork
         {
         }
 
+        public void ChangeMenuTableStatusToFalse(int id)
+        {
+            using var context = new SignalRContext();
+            var value=context.MenuTables.Where(x => x.MenuTableID == id).FirstOrDefault();
+            value.Status = false;
+            context.SaveChanges();
+        }
+
+        public void ChangeMenuTableStatusToTrue(int id)
+        {
+            using var context = new SignalRContext();
+            var value = context.MenuTables.Where(x => x.MenuTableID == id).FirstOrDefault();
+            value.Status = true;
+            context.SaveChanges();
+        }
+
         public int MenuTableCount()
         {
             using var context = new SignalRContext();
@@ -18,4 +39,3 @@ namespace SignalR.DataAccessLayer.EntityFreamwork
         }
     }
 }
-

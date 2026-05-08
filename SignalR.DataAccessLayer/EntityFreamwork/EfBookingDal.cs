@@ -1,7 +1,12 @@
-using SignalR.DataAccessLayer.Abstract;
+﻿using SignalR.DataAccessLayer.Abstract;
 using SignalR.DataAccessLayer.concrete;
 using SignalR.DataAccessLayer.Repositories;
 using SignalR.EntityLayer.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SignalR.DataAccessLayer.EntityFreamwork
 {
@@ -13,9 +18,8 @@ namespace SignalR.DataAccessLayer.EntityFreamwork
 
         public void BookingStatusApproved(int id)
         {
-            using var context = new SignalRContext();
+           using var context = new SignalRContext();
             var values = context.Bookings.Find(id);
-            if (values is null) return;
             values.Description = "Rezervasyon Onaylandı";
             context.SaveChanges();
         }
@@ -24,10 +28,8 @@ namespace SignalR.DataAccessLayer.EntityFreamwork
         {
             using var context = new SignalRContext();
             var values = context.Bookings.Find(id);
-            if (values is null) return;
             values.Description = "Rezervasyon İptal Edildi";
             context.SaveChanges();
         }
     }
 }
-

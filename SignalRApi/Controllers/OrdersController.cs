@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SignalR.BusinessLayer.Abstract;
 
@@ -17,27 +17,26 @@ namespace SignalRApi.Controllers
         [HttpGet("TotalOrderCount")]
         public IActionResult TotalOrderCount()
         {
-
+          
             return Ok(_orderService.TTotalOrderCount());
         }
         [HttpGet("ActiveOrderCount")]
-        public IActionResult ActiveOrderCount()
+        public IActionResult ActiveOrderCount ()
         {
-
+          
             return Ok(_orderService.TActiveOrderCount());
         }
         [HttpGet("LastOrderPrice")]
         public IActionResult LastOrderPrice()
         {
-
+          
             return Ok(_orderService.TLastOrderPrice());
         }
         [HttpGet("TodayTotalPeice")]
         public IActionResult TodayTotalPeice()
         {
-
+          
             return Ok(_orderService.TTodayTotalPeice());
         }
     }
 }
-

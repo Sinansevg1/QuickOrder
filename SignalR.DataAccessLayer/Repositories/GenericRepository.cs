@@ -1,5 +1,10 @@
-using SignalR.DataAccessLayer.Abstract;
+﻿using SignalR.DataAccessLayer.Abstract;
 using SignalR.DataAccessLayer.concrete;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SignalR.DataAccessLayer.Repositories
 {
@@ -24,14 +29,14 @@ namespace SignalR.DataAccessLayer.Repositories
             _context.SaveChanges();
         }
 
-        public T GetByID(int id)
-        {
-            return _context.Set<T>().Find(id)!;
-        }
-
         public List<T> GetListAll()
         {
             return _context.Set<T>().ToList();
+        }
+
+        public T GetByID(int id)
+        {
+            return _context.Set<T>().Find(id);
         }
 
         public void Update(T entity)
@@ -39,6 +44,7 @@ namespace SignalR.DataAccessLayer.Repositories
             _context.Update(entity);
             _context.SaveChanges();
         }
+
+       
     }
 }
-

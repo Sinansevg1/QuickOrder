@@ -1,3 +1,5 @@
+﻿
+
 namespace SignalRApi.Models
 {
     public class ResultBasketListWithProducts
@@ -11,4 +13,3 @@ namespace SignalRApi.Models
         public string ProductName { get; set; }
     }
 }
-
