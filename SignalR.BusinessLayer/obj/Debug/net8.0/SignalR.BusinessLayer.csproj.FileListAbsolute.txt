@@ -17,3 +17,4 @@ C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\SignalR.Bu
 C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\refint\SignalR.BusinessLayer.dll
 C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\SignalR.BusinessLayer.pdb
 C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\ref\SignalR.BusinessLayer.dll
+C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\SignalR.BusinessLayer.sourcelink.json

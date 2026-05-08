@@ -15,3 +15,6 @@ C:\Users\SS\Desktop\QuickOrder\SignalR.DataAccessLayer\obj\Debug\net8.0\SignalR.
 C:\Users\SS\Desktop\QuickOrder\SignalR.DataAccessLayer\obj\Debug\net8.0\refint\SignalR.DataAccessLayer.dll
 C:\Users\SS\Desktop\QuickOrder\SignalR.DataAccessLayer\obj\Debug\net8.0\SignalR.DataAccessLayer.pdb
 C:\Users\SS\Desktop\QuickOrder\SignalR.DataAccessLayer\obj\Debug\net8.0\ref\SignalR.DataAccessLayer.dll
+C:\Users\SS\Desktop\QuickOrder\SignalR.DataAccessLayer\bin\Debug\net8.0\SignalR.DataAccessLayer.runtimeconfig.json
+C:\Users\SS\Desktop\QuickOrder\SignalR.DataAccessLayer\obj\Debug\net8.0\SignalR.DataAccessLayer.sourcelink.json
+C:\Users\SS\Desktop\QuickOrder\SignalR.DataAccessLayer\obj\Debug\net8.0\SignalR.DataAccessLayer.genruntimeconfig.cache

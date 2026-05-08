@@ -1,7 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
   <ItemGroup>
-    <None Include="wwwroot\\Ready-Bootstrap-Dashboard-master\\.DS_Store" />
+    <None Include="wwwroot\Ready-Bootstrap-Dashboard-master\.DS_Store" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,14 +31,8 @@
 
   <ItemGroup>
     <Reference Include="QRCoder">
-      <HintPath>C:\\Users\\SS\\Desktop\\QRCoder.dll</HintPath>
+      <HintPath>C:\Users\SS\Desktop\QRCoder.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
 
 </Project>
