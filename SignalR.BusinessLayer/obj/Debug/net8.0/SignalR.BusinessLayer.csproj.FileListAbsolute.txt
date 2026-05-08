@@ -12,9 +12,9 @@ C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\SignalR.Bu
 C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\SignalR.BusinessLayer.AssemblyInfoInputs.cache
 C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\SignalR.BusinessLayer.AssemblyInfo.cs
 C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\SignalR.BusinessLayer.csproj.CoreCompileInputs.cache
+C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\SignalR.BusinessLayer.sourcelink.json
 C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\SignalR..CCF1CBCC.Up2Date
 C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\SignalR.BusinessLayer.dll
 C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\refint\SignalR.BusinessLayer.dll
 C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\SignalR.BusinessLayer.pdb
 C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\ref\SignalR.BusinessLayer.dll
-C:\Users\SS\Desktop\QuickOrder\SignalR.BusinessLayer\obj\Debug\net8.0\SignalR.BusinessLayer.sourcelink.json

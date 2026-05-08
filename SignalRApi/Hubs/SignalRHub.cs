@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using SignalR.BusinessLayer.Abstract;
+using SignalR.DataAccessLayer.concrete;
 
 namespace SignalRApi.Hubs
 {
@@ -12,15 +13,7 @@ namespace SignalRApi.Hubs
         private readonly IMenuTableService _menuTableService;
         private readonly IBookingService _bookingService;
         private readonly INotificationService _notificationService;
-
-        public SignalRHub(
-            ICategoryService categoryService,
-            IProductService productService,
-            IOrderService orderService,
-            IMoneyCaseService moneyCaseService,
-            IMenuTableService menuTableService,
-            IBookingService bookingService,
-            INotificationService notificationService)
+        public SignalRHub(ICategoryService categoryService, IProductService productService, IOrderService orderService, IMoneyCaseService moneyCaseService, IMenuTableService menuTableService, IBookingService bookingService, INotificationService notificationService)
         {
             _categoryService = categoryService;
             _productService = productService;
@@ -30,9 +23,8 @@ namespace SignalRApi.Hubs
             _bookingService = bookingService;
             _notificationService = notificationService;
         }
-
+       
         public static int clientCount { get; set; } = 0;
-
         public async Task SendStatistic()
         {
             var value = _categoryService.TCategoryCount();
@@ -64,7 +56,6 @@ namespace SignalRApi.Hubs
 
             var value10 = _productService.TProductAvgPriceByHamburger();
             await Clients.All.SendAsync("ReceiveProductAvgPriceByHamburger", value10.ToString("0.00") + "₺");
-
             var value11 = _orderService.TTotalOrderCount();
             await Clients.All.SendAsync("ReceiveTotalOrderCount", value11);
 
@@ -80,7 +71,7 @@ namespace SignalRApi.Hubs
             var value15 = _menuTableService.TMenutableCount();
             await Clients.All.SendAsync("ReceiveMenutableCount", value15);
         }
-
+       
         public async Task SengProgress()
         {
             var value = _moneyCaseService.TTotalMoneyCaseAmount();
@@ -91,41 +82,57 @@ namespace SignalRApi.Hubs
 
             var value3 = _menuTableService.TMenutableCount();
             await Clients.All.SendAsync("ReceiveMenutableCount", value3);
-        }
 
+            var value5 = _productService.TProductPriceAvg();
+            await Clients.All.SendAsync("ReceiveProductPriceAvg", value5);
+
+            var value6 = _productService.TProductAvgPriceByHamburger();
+            await Clients.All.SendAsync("ReceiveAvgPriceByHamburger", value6);
+
+            var value7 = _productService.TProductCountByCategoryNameDrink();
+            await Clients.All.SendAsync("ReceiveProductCountByCategoryNameDrink", value7);
+
+            var value8 = _orderService.TTotalOrderCount();
+            await Clients.All.SendAsync("ReceiveTotalOrderCount", value8);
+
+            var value9 = _productService.TProductPriceBySteakBurger();
+            await Clients.All.SendAsync("ReceiveProductPriceBySteakBurger", value9);
+
+            var value10 = _productService.TTotalPriceByDrinkCategory();
+            await Clients.All.SendAsync("ReceiveTotalPriceByDrinkCategory", value10);
+
+            var value11 = _productService.TTotalPriceBySaladCategory();
+            await Clients.All.SendAsync("ReceiveTotalPriceBySaladCategory", value11);
+        }
         public async Task GetBookingList()
         {
             var values = _bookingService.TGetListAll();
             await Clients.All.SendAsync("ReceiveBookingList", values);
         }
-
         public async Task SendNotification()
         {
-            var value = _notificationService.TNotificationCountByStatusFalse();
-            await Clients.All.SendAsync("ReceiveNotificationCountByFalse", value);
+            var values = _notificationService.TNotificationCountByStatusFalse();
+            await Clients.All.SendAsync("ReceiveNotificationCountByFalse", values);
 
             var notificationListByFalse = _notificationService.TGetAllNotificationByFalse();
+
             await Clients.All.SendAsync("ReceiveNotificationListByFalse", notificationListByFalse);
         }
-
         public async Task GetMenuTableStatus()
         {
             var value = _menuTableService.TGetListAll();
             await Clients.All.SendAsync("ReceiveMenuTableStatus", value);
         }
-
         public async Task SendMessage(string user, string message)
         {
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
-
         public override async Task OnConnectedAsync()
         {
             clientCount++;
             await Clients.All.SendAsync("ReceiveClientCount", clientCount);
             await base.OnConnectedAsync();
         }
-
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             clientCount--;
@@ -134,4 +141,3 @@ namespace SignalRApi.Hubs
         }
     }
 }
-
