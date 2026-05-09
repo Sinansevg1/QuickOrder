@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -22,14 +22,14 @@ namespace SignalRWebUI.Controllers
         {
 
            // var client = _httpClientFactory.CreateClient();
-           // var responseMessage = await client.GetAsync("https://localhost:7096/api/Contact");
+           // var responseMessage = await client.GetAsync("https://localhost:7201/api/Contact");
            // var jsonData = await responseMessage.Content.ReadAsStringAsync();
            //// var values = JsonConvert.DeserializeObject<ResultContactDto>(jsonData);
            //JsonObject item =JsonObject.Parse(jsonData);
            // ViewBag.location = values.Location;
 
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync("https://localhost:7096/api/Contact");
+            HttpResponseMessage response = await client.GetAsync("https://localhost:7201/api/Contact");
             response.EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
             JArray item= JArray.Parse(responseBody);
@@ -48,7 +48,7 @@ namespace SignalRWebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(createMessageDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7096/api/Message", stringContent);
+            var responseMessage = await client.PostAsync("https://localhost:7201/api/Message", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index","Default");

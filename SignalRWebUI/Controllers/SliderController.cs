@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SignalRWebUI.Dtos.FeatureDtos;
 using SignalRWebUI.Dtos.SliderDtos;
@@ -16,7 +16,7 @@ namespace SignalRWebUI.Controllers
         public async Task<IActionResult> Index()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7096/api/Slider");
+            var responseMessage = await client.GetAsync("https://localhost:7201/api/Slider");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -36,7 +36,7 @@ namespace SignalRWebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject( createSliderDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7096/api/Slider", stringContent);
+            var responseMessage = await client.PostAsync("https://localhost:7201/api/Slider", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -46,7 +46,7 @@ namespace SignalRWebUI.Controllers
         public async Task<IActionResult> DeleteSlider(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7096/api/Slider/{id}");
+            var responseMessage = await client.DeleteAsync($"https://localhost:7201/api/Slider/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -57,7 +57,7 @@ namespace SignalRWebUI.Controllers
         public async Task<IActionResult> UpdateSlider(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7096/api/Slider/{id}");
+            var responseMessage = await client.GetAsync($"https://localhost:7201/api/Slider/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -72,7 +72,7 @@ namespace SignalRWebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject( updateSliderDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7096/api/Slider", stringContent);
+            var responseMessage = await client.PutAsync("https://localhost:7201/api/Slider", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");

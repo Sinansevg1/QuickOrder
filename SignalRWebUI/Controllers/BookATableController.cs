@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SignalRWebUI.Dtos.BookingDtos;
@@ -19,7 +19,7 @@ namespace SignalRWebUI.Controllers
         public async Task<IActionResult> Index()
         {
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync("https://localhost:7096/api/Contact");
+            HttpResponseMessage response = await client.GetAsync("https://localhost:7201/api/Contact");
             response.EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
             JArray item = JArray.Parse(responseBody);
@@ -32,7 +32,7 @@ namespace SignalRWebUI.Controllers
         {
 
             HttpClient client2 = new HttpClient();
-            HttpResponseMessage response = await client2.GetAsync("https://localhost:7096/api/Contact");
+            HttpResponseMessage response = await client2.GetAsync("https://localhost:7201/api/Contact");
             response.EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
             JArray item = JArray.Parse(responseBody);
@@ -44,7 +44,7 @@ namespace SignalRWebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(createBookingDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7096/api/Booking", stringContent);
+            var responseMessage = await client.PostAsync("https://localhost:7201/api/Booking", stringContent);
            
             if (responseMessage.IsSuccessStatusCode)
             {

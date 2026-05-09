@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SignalRWebUI.Dtos.MenuTableDtos;
 using System.Net.Http;
@@ -17,7 +17,7 @@ namespace SignalRWebUI.Controllers
         public async Task< IActionResult> CustomerTableList()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7096/api/MenuTables");
+            var responseMessage = await client.GetAsync("https://localhost:7201/api/MenuTables");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SignalRWebUI.Dtos.BasketDtos;
 using SignalRWebUI.Dtos.ProductDtos;
@@ -19,7 +19,7 @@ namespace SignalRWebUI.Controllers
             ViewBag.v=id;
             
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7096/api/Product/ProductListWithCategory");
+            var responseMessage = await client.GetAsync("https://localhost:7201/api/Product/ProductListWithCategory");
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<List<ResultProductDto>>(jsonData);
             return View(values);
@@ -42,12 +42,12 @@ namespace SignalRWebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(createBasketDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7096/api/Basket", stringContent);
+            var responseMessage = await client.PostAsync("https://localhost:7201/api/Basket", stringContent);
 
             var client2 = _httpClientFactory.CreateClient();
             //var jsonData2 = JsonConvert.SerializeObject(updateCategoryDto);
             //StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            await client2.GetAsync("https://localhost:7096/api/MenuTables/ChangeMenuTableStatusToTrue?id="+menuTableId);
+            await client2.GetAsync("https://localhost:7201/api/MenuTables/ChangeMenuTableStatusToTrue?id="+menuTableId);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
