@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using SignalRWebUI.Dtos.BasketDtos;
 using SignalRWebUI.Dtos.ProductDtos;
@@ -15,8 +16,12 @@ namespace SignalRWebUI.Controllers
         }
         public async Task<IActionResult> Index(int id)
         {
-            
-            ViewBag.v=id;
+            if (id > 0)
+            {
+                HttpContext.Session.SetInt32("ActiveTableId", id);
+            }
+
+            ViewBag.v = HttpContext.Session.GetInt32("ActiveTableId") ?? 0;
             
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:7201/api/Product/ProductListWithCategory");
@@ -50,7 +55,8 @@ namespace SignalRWebUI.Controllers
             await client2.GetAsync("https://localhost:7201/api/MenuTables/ChangeMenuTableStatusToTrue?id="+menuTableId);
             if (responseMessage.IsSuccessStatusCode)
             {
-                return RedirectToAction("index");
+                HttpContext.Session.SetInt32("ActiveTableId", menuTableId);
+                return RedirectToAction("Index", new { id = menuTableId });
             }
             return View();
 

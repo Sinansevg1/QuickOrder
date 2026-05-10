@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "N+GwJZb2RWw=",
+  "dgSpecHash": "bLRb7R2QSB4=",
   "success": true,
   "projectFilePath": "C:\\Users\\SS\\Desktop\\QuickOrder\\SignalRApi\\SignalRApi.csproj",
   "expectedPackageFiles": [
@@ -176,7 +176,7 @@
     {
       "code": "NU1903",
       "level": "Warning",
-      "message": "'AutoMapper' 15.0.1 paketinde önem derecesi yüksek olan bilinen bir https://github.com/advisories/GHSA-rvv3-g6hj-g44x güvenlik açığı var",
+      "message": "Package 'AutoMapper' 15.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
       "projectPath": "C:\\Users\\SS\\Desktop\\QuickOrder\\SignalRApi\\SignalRApi.csproj",
       "warningLevel": 1,
       "filePath": "C:\\Users\\SS\\Desktop\\QuickOrder\\SignalRApi\\SignalRApi.csproj",

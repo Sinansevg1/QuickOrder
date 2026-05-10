@@ -1,10 +1,15 @@
 ﻿@model List<ResultBasketDto>
+@using Microsoft.AspNetCore.Http
 @{
     Layout = null;
     int count = 0;
     decimal basketTotalPrice = 0 ;
     decimal basketTotalPriceWithTax = 0;
     decimal tax = 0;
+    var activeTableId = Context.Session.GetInt32("ActiveTableId");
+    var menuHref = activeTableId.HasValue && activeTableId.Value > 0
+        ? $"/Menu/Index/{activeTableId.Value}"
+        : "/CustomerTable/CustomerTableList";
 }
 
 <!DOCTYPE html>
@@ -22,7 +27,7 @@
              <div class="col-12">
                 <nav class="breadcrumb bg-dark mb-30">
                     <a class="breadcrumb-item text-white" href="/Default/Index">Ana Sayfa</a>
-                    <a class="breadcrumb-item text-white" href="/Menu/Index">Menü</a>
+                    <a class="breadcrumb-item text-white" href="@menuHref">Menü</a>
                     <span class="breadcrumb-item active">Sepetiniz</span>
                 </nav>
              </div>
