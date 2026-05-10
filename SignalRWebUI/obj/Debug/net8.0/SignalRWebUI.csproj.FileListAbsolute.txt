@@ -274,4 +274,3 @@ C:\Users\SS\Desktop\QuickOrder\SignalRWebUI\obj\Debug\net8.0\refint\SignalRWebUI
 C:\Users\SS\Desktop\QuickOrder\SignalRWebUI\obj\Debug\net8.0\SignalRWebUI.pdb
 C:\Users\SS\Desktop\QuickOrder\SignalRWebUI\obj\Debug\net8.0\SignalRWebUI.genruntimeconfig.cache
 C:\Users\SS\Desktop\QuickOrder\SignalRWebUI\obj\Debug\net8.0\ref\SignalRWebUI.dll
-C:\Users\SS\Desktop\QuickOrder\SignalRWebUI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

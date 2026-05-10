@@ -1,4 +1,4 @@
-﻿@model List<ResultBasketDto>
+﻿@model SignalRWebUI.ViewModels.BasketPageViewModel
 @using Microsoft.AspNetCore.Http
 @{
     Layout = null;
@@ -18,6 +18,101 @@
 @await Component.InvokeAsync("_UILayoutHeadComponentPartial")
 
 <body class="sub_page">
+    <style>
+        .suggestion-panel {
+            --panel-bg: #111827;
+            --panel-soft: #1f2937;
+            --panel-accent: #f59e0b;
+            --panel-text: #f9fafb;
+            --panel-muted: #d1d5db;
+            background: linear-gradient(145deg, var(--panel-bg), #0b1220);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.3);
+            color: var(--panel-text);
+        }
+
+        .suggestion-title {
+            font-size: 1.02rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            margin-bottom: 14px;
+            color: var(--panel-text);
+        }
+
+        .suggestion-item {
+            background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+            border: 1px solid rgba(245, 158, 11, 0.28);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        }
+
+        .suggestion-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .suggestion-product {
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: var(--panel-text);
+            margin: 0;
+        }
+
+        .suggestion-price {
+            font-size: 0.94rem;
+            font-weight: 700;
+            color: #fde68a;
+            margin: 0;
+        }
+
+        .suggestion-category {
+            display: inline-block;
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: #111827;
+            background: #fcd34d;
+            border-radius: 999px;
+            padding: 3px 9px;
+            margin: 7px 0 8px;
+        }
+
+        .suggestion-reason {
+            color: var(--panel-muted);
+            font-size: 0.84rem;
+            line-height: 1.35;
+            margin-bottom: 10px;
+        }
+
+        .suggestion-btn {
+            border: 0;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #f59e0b, #f97316);
+            color: #fff;
+            padding: 7px 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            transition: opacity .2s ease;
+        }
+
+        .suggestion-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .suggestion-empty {
+            color: #e5e7eb;
+            font-size: 0.86rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px dashed rgba(255,255,255,0.22);
+            border-radius: 10px;
+            padding: 11px;
+        }
+    </style>
 
     @await Component.InvokeAsync("_MenuNavbarComponentPartial")
     <br />
@@ -48,29 +143,27 @@
                             <th>Sil</th>
                         </tr>
                     </thead>
-                    @foreach(var group in Model.GroupBy(x=>x.ProductName))
-                    {
-                        var item = group.First();
-                        var itemCount = group.Count();  
-
-
-                        basketTotalPrice = Model.Sum(x => x.Price);
-                        tax = basketTotalPrice / 100 * 10;
-                        basketTotalPriceWithTax = basketTotalPrice + tax;
-                        count++;
-
-                       var totalPriceWithCount = item.Price * itemCount;
-                    <tbody class="align-middle">
-                        <tr >
-                            <td class="align-middle">@count</td>
-                            <td class="align-middle">@item.ProductName</td>
-                            <td class="align-middle">@itemCount</td>
-                            <td class="align-middle">@item.Price</td>
-                            <td class="align-middle">@totalPriceWithCount</td>
-                            <td class="align-middle btn-delete"><a  class="btn btn-sm btn-danger"href="/Baskets/DeleteBasket/@item.BasketID"><i class="fa fa-times"></i></a></td>
-                        </tr>
+                    <tbody id="basketRows" class="align-middle">
+                        @foreach (var group in Model.Baskets.GroupBy(x => x.ProductName))
+                        {
+                            var item = group.First();
+                            var itemCount = group.Count();
+                            var totalPriceWithCount = item.Price * itemCount;
+                            count++;
+                            <tr>
+                                <td class="align-middle">@count</td>
+                                <td class="align-middle">@item.ProductName</td>
+                                <td class="align-middle">@itemCount</td>
+                                <td class="align-middle">@item.Price</td>
+                                <td class="align-middle">@totalPriceWithCount</td>
+                                <td class="align-middle btn-delete">
+                                    <button type="button" class="btn btn-sm btn-danger js-delete-basket" data-basket-id="@item.BasketID">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
-                    }
                 </table>
             </div>
             <div class="col-lg-4">
@@ -88,21 +181,49 @@
                     <div id="container" class="border-bottom pb-2" >
                         <div class="d-flex justify-content-between mb-3">
                             <h6>Toplam Tutar</h6>
-                            <h6><span id="totalprice">@basketTotalPrice</span>₺</h6>
+                            <h6><span id="totalprice">@Model.Baskets.Sum(x => x.Price)</span>₺</h6>
                         </div>
                         <div class="d-flex justify-content-between ">
                             <h6 class="font-weight-medium">KDV Oranı</h6>
-                            <h6 id="KDV" class="font-weight-medium">@tax</>₺</h6>
+                            <h6 id="KDV" class="font-weight-medium">@(Model.Baskets.Sum(x => x.Price) / 100 * 10)</>₺</h6>
                         </div>
                         <br />
                     </div>
                     <div class="pt-2">
                         <div class="d-flex justify-content-between mt-2">
                             <h5>Toplam Tutar</h5>
-                            <h5><span id="totalpricewithkdv">@basketTotalPriceWithTax</span>₺</h5>
+                            <h5><span id="totalpricewithkdv">@(Model.Baskets.Sum(x => x.Price) + (Model.Baskets.Sum(x => x.Price) / 100 * 10))</span>₺</h5>
                         </div>
                         <br />
                         <button id="btncheckeed" class="btn btn-block btn-warning font-weight-bold my-3">Siparişi Tamamla </button>
+                    </div>
+                </div>
+                <div class="suggestion-panel">
+                    <h5 class="suggestion-title">Bunlari da eklemek ister misiniz?</h5>
+                    <div id="suggestionContainer">
+                        @if (Model.Recommendations.Suggestions.Any())
+                        {
+                            @foreach (var recommendation in Model.Recommendations.Suggestions)
+                            {
+                                <div class="suggestion-item">
+                                    <div class="d-flex justify-content-between">
+                                        <p class="suggestion-product">@recommendation.ProductName</p>
+                                        <p class="suggestion-price">@recommendation.Price ₺</p>
+                                    </div>
+                                    <span class="suggestion-category">@recommendation.CategoryName</span>
+                                    <div class="suggestion-reason">@recommendation.Reason</div>
+                                    <form class="js-add-suggestion-form" method="post" action="/Baskets/AddSuggestedProduct">
+                                        <input type="hidden" name="productId" value="@recommendation.ProductId" />
+                                        <input type="hidden" name="menuTableId" value="@Model.TableId" />
+                                        <button type="submit" class="suggestion-btn">Sepete Ekle</button>
+                                    </form>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="suggestion-empty">Su an icin ek onerimiz bulunmuyor.</div>
+                        }
                     </div>
                 </div>
             </div>
@@ -112,6 +233,162 @@
     @await Component.InvokeAsync("_UILayoutFooterComponentPartial")
 
     @await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+    <script>
+        (() => {
+            const tableId = @Model.TableId;
+            const addedProductIds = new Set();
+            const basketRows = document.getElementById('basketRows');
+            const suggestionContainer = document.getElementById('suggestionContainer');
+            const totalPriceEl = document.getElementById('totalprice');
+            const taxEl = document.getElementById('KDV');
+            const totalWithTaxEl = document.getElementById('totalpricewithkdv');
+
+            function currency(value) {
+                return Number(value).toFixed(2);
+            }
+
+            function bindDeleteButtons() {
+                document.querySelectorAll('.js-delete-basket').forEach(button => {
+                    button.onclick = async () => {
+                        const basketId = button.dataset.basketId;
+                        button.disabled = true;
+                        try {
+                            const body = new URLSearchParams({ basketId, menuTableId: tableId });
+                            const response = await fetch('/Baskets/DeleteBasketAjax', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                                body: body.toString()
+                            });
+                            const result = await response.json();
+                            if (!result.success) {
+                                alert(result.message || 'Urun silinemedi.');
+                                button.disabled = false;
+                                return;
+                            }
+                            await refreshBasketData();
+                        } catch {
+                            alert('Silme sirasinda bir hata olustu.');
+                            button.disabled = false;
+                        }
+                    };
+                });
+            }
+
+            function bindSuggestionForms() {
+                document.querySelectorAll('.js-add-suggestion-form').forEach(form => {
+                    form.onsubmit = async (event) => {
+                        event.preventDefault();
+                        const productId = form.querySelector('input[name="productId"]').value;
+                        const button = form.querySelector('.suggestion-btn');
+                        if (addedProductIds.has(productId) || button.disabled) return;
+
+                        button.disabled = true;
+                        const previousText = button.textContent;
+                        button.textContent = 'Ekleniyor...';
+
+                        try {
+                            const formData = new URLSearchParams(new FormData(form));
+                            const response = await fetch('/Baskets/AddSuggestedProduct', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                                body: formData.toString()
+                            });
+                            const result = await response.json();
+
+                            if (result.success) {
+                                addedProductIds.add(productId);
+                                await refreshBasketData();
+                                return;
+                            }
+
+                            if (result.alreadyExists) {
+                                addedProductIds.add(productId);
+                                button.textContent = 'Sepette Var';
+                            } else {
+                                button.disabled = false;
+                                button.textContent = previousText;
+                                alert(result.message || 'Bir hata olustu.');
+                            }
+                        } catch {
+                            button.disabled = false;
+                            button.textContent = previousText;
+                            alert('Istek sirasinda bir hata olustu.');
+                        }
+                    };
+                });
+            }
+
+            async function refreshBasketData() {
+                const response = await fetch(`/Baskets/GetBasketData?id=${tableId}`, { method: 'GET' });
+                const model = await response.json();
+
+                const groups = {};
+                (model.baskets || []).forEach(item => {
+                    if (!groups[item.productName]) groups[item.productName] = [];
+                    groups[item.productName].push(item);
+                });
+
+                const rows = [];
+                let index = 0;
+                let total = 0;
+                Object.keys(groups).forEach(name => {
+                    const items = groups[name];
+                    const first = items[0];
+                    const count = items.length;
+                    const lineTotal = Number(first.price) * count;
+                    total += Number(first.price) * count;
+                    index++;
+                    rows.push(`
+                        <tr>
+                            <td class="align-middle">${index}</td>
+                            <td class="align-middle">${first.productName}</td>
+                            <td class="align-middle">${count}</td>
+                            <td class="align-middle">${currency(first.price)}</td>
+                            <td class="align-middle">${currency(lineTotal)}</td>
+                            <td class="align-middle btn-delete">
+                                <button type="button" class="btn btn-sm btn-danger js-delete-basket" data-basket-id="${first.basketID}">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `);
+                });
+                basketRows.innerHTML = rows.join('');
+
+                const tax = total / 100 * 10;
+                totalPriceEl.textContent = currency(total);
+                taxEl.textContent = `${currency(tax)}₺`;
+                totalWithTaxEl.textContent = currency(total + tax);
+
+                const suggestions = model.recommendations?.suggestions || [];
+                if (!suggestions.length) {
+                    suggestionContainer.innerHTML = '<div class="suggestion-empty">Su an icin ek onerimiz bulunmuyor.</div>';
+                } else {
+                    suggestionContainer.innerHTML = suggestions.map(s => `
+                        <div class="suggestion-item">
+                            <div class="d-flex justify-content-between">
+                                <p class="suggestion-product">${s.productName}</p>
+                                <p class="suggestion-price">${currency(s.price)} ₺</p>
+                            </div>
+                            <span class="suggestion-category">${s.categoryName}</span>
+                            <div class="suggestion-reason">${s.reason}</div>
+                            <form class="js-add-suggestion-form" method="post" action="/Baskets/AddSuggestedProduct">
+                                <input type="hidden" name="productId" value="${s.productId}" />
+                                <input type="hidden" name="menuTableId" value="${tableId}" />
+                                <button type="submit" class="suggestion-btn">Sepete Ekle</button>
+                            </form>
+                        </div>
+                    `).join('');
+                }
+
+                bindDeleteButtons();
+                bindSuggestionForms();
+            }
+
+            bindDeleteButtons();
+            bindSuggestionForms();
+        })();
+    </script>
 
 </body>
 

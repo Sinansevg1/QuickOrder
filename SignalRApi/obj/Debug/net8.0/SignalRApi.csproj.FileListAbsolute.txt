@@ -276,4 +276,5 @@ C:\Users\SS\Desktop\QuickOrder\SignalRApi\obj\Debug\net8.0\refint\SignalRApi.dll
 C:\Users\SS\Desktop\QuickOrder\SignalRApi\obj\Debug\net8.0\SignalRApi.pdb
 C:\Users\SS\Desktop\QuickOrder\SignalRApi\obj\Debug\net8.0\SignalRApi.genruntimeconfig.cache
 C:\Users\SS\Desktop\QuickOrder\SignalRApi\obj\Debug\net8.0\ref\SignalRApi.dll
-C:\Users\SS\Desktop\QuickOrder\SignalRApi\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\SS\Desktop\QuickOrder\SignalRApi\bin\Debug\net8.0\DotNetEnv.dll
+C:\Users\SS\Desktop\QuickOrder\SignalRApi\bin\Debug\net8.0\Superpower.dll
