@@ -1,0 +1,69 @@
+﻿@model CreateMailDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+<!-- Place the first <script> tag in your HTML's <head> -->
+<script src="https://cdn.tiny.cloud/1/l73ydma959eub9lxwjaji9tl8ltyvjxlgxqyn08kpsjeymkh/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+
+<!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+<script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: [
+        // Core editing features
+        'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+        // Your account includes a free trial of TinyMCE premium features
+        // Try the most popular premium features until Apr 16, 2026:
+        'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'advtemplate', 'tinymceai', 'uploadcare', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown','importword', 'exportword', 'exportpdf'
+      ],
+      toolbar: 'undo redo | tinymceai-chat tinymceai-quickactions tinymceai-review | blocks fontfamily fontsize | bold italic underline strikethrough | link media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography uploadcare | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      mergetags_list: [
+        { value: 'First.Name', title: 'First Name' },
+        { value: 'Email', title: 'Email' },
+      ],
+      tinymceai_token_provider: async () => {
+        await fetch(`https://demo.api.tiny.cloud/1/l73ydma959eub9lxwjaji9tl8ltyvjxlgxqyn08kpsjeymkh/auth/random`, { method: "POST", credentials: "include" });
+        return { token: await fetch(`https://demo.api.tiny.cloud/1/l73ydma959eub9lxwjaji9tl8ltyvjxlgxqyn08kpsjeymkh/jwt/tinymceai`, { credentials: "include" }).then(r => r.text()) };
+      },
+      uploadcare_public_key: 'a9af711c930ab4cb4476',
+    });
+</script>
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Mail Sayfası</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Mail Gönderme Paneli</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="ReceiverMail">Alıcı Mail Adresi</label>
+                                <input type="text" class="form-control" asp-for="ReceiverMail" id="ReceiverMail">
+                            </div>
+                            <div class="form-group">
+                                <label for="Subject">Konu</label>
+                                <input type="text" class="form-control" asp-for="Subject" id="Subject">
+                            </div>
+                            <div class="form-group">
+                                <label for="Body">Mesajınız</label>
+                                <textarea rows="5" asp-for="Body" id="Body"class="form-control"></textarea>
+                            </div>                          
+                            <div class="card-action">
+                                <button class="btn btn-primary">Maili Gönder</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
