@@ -278,3 +278,4 @@ C:\Users\SS\Desktop\QuickOrder\SignalRApi\obj\Debug\net8.0\SignalRApi.genruntime
 C:\Users\SS\Desktop\QuickOrder\SignalRApi\obj\Debug\net8.0\ref\SignalRApi.dll
 C:\Users\SS\Desktop\QuickOrder\SignalRApi\bin\Debug\net8.0\DotNetEnv.dll
 C:\Users\SS\Desktop\QuickOrder\SignalRApi\bin\Debug\net8.0\Superpower.dll
+C:\Users\SS\Desktop\QuickOrder\SignalRApi\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
