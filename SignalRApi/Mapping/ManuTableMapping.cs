@@ -8,10 +8,10 @@ namespace SignalRApi.Mapping
     {
         public ManuTableMapping()
         {
-            CreateMap<MenuTable, ResultMenuTableDto>();
-            CreateMap<MenuTable, CreateMenuTableDto>();
-            CreateMap<MenuTable, UpdateMenuTableDto>();
-            CreateMap<MenuTable, GetMenuTableDto>();
+            CreateMap<MenuTable, ResultMenuTableDto>().ReverseMap();
+            CreateMap<MenuTable, CreateMenuTableDto>().ReverseMap();
+            CreateMap<MenuTable, UpdateMenuTableDto>().ReverseMap();
+            CreateMap<MenuTable, GetMenuTableDto>().ReverseMap();
         }
     }
 }

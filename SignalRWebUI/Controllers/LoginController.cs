@@ -26,7 +26,7 @@ namespace SignalRWebUI.Controllers
             var result = await _signInManager.PasswordSignInAsync(loginDto.Username, loginDto.Password, false, false);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Default");
+                return RedirectToAction("Index", "ProgressBars");
             }
             return View();
         }
@@ -34,7 +34,7 @@ namespace SignalRWebUI.Controllers
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Login");
+            return RedirectToAction("Index", "Default");
         }
     }
 }
