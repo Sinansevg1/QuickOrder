@@ -7,6 +7,7 @@ using SignalR.DataAccessLayer.Abstract;
 using SignalR.DataAccessLayer.concrete;
 using SignalR.DataAccessLayer.EntityFreamwork;
 using SignalRApi.Hubs;
+using SignalRApi.Middleware;
 using SignalRApi.Options;
 using SignalRApi.Services.Recommendations;
 using System.Reflection;
@@ -31,14 +32,29 @@ if (envConfig.Count > 0)
     builder.Configuration.AddInMemoryCollection(envConfig);
 }
 
+var allowedOriginsRaw = builder.Configuration["ApiSettings:AllowedOrigins"] ?? "";
+var allowedOrigins = allowedOriginsRaw
+    .Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
 builder.Services.AddCors(opt =>
 {
-    opt.AddPolicy("CorsPolicy", builder =>
+    opt.AddPolicy("CorsPolicy", policy =>
     {
-       builder.AllowAnyHeader()
-        .AllowAnyMethod()
-        .SetIsOriginAllowed((Host) => true) 
-        .AllowCredentials();
+        if (allowedOrigins.Length > 0)
+        {
+            policy.WithOrigins(allowedOrigins)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        }
+        else
+        {
+            // Geliştirme ortamı için fallback — production'da AllowedOrigins ayarlanmalı
+            policy.AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .SetIsOriginAllowed(_ => true)
+                  .AllowCredentials();
+        }
     });
 });
 builder.Services.AddSignalR();
@@ -76,6 +92,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ApiKeyMiddleware>();
 
 app.UseAuthorization();
 

@@ -14,8 +14,8 @@ namespace SignalRWebUI.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7201/api/Discount");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.GetAsync("api/Discount");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -32,10 +32,10 @@ namespace SignalRWebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateDiscount(CreateDiscountDto createDiscountDto)
         {
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("SignalRApi");
             var jsonData = JsonConvert.SerializeObject( createDiscountDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7201/api/Discount", stringContent);
+            var responseMessage = await client.PostAsync("api/Discount", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -44,8 +44,8 @@ namespace SignalRWebUI.Controllers
         }
         public async Task<IActionResult> DeleteDiscount(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7201/api/Discount/{id}");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.DeleteAsync($"api/Discount/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -55,8 +55,8 @@ namespace SignalRWebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateDiscount(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7201/api/Discount/{id}");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.GetAsync($"api/Discount/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -68,10 +68,10 @@ namespace SignalRWebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateDiscount(UpdateDiscountDto  updateDiscountDto)
         {
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("SignalRApi");
             var jsonData = JsonConvert.SerializeObject( updateDiscountDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7201/api/Discount", stringContent);
+            var responseMessage = await client.PutAsync("api/Discount", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -80,14 +80,14 @@ namespace SignalRWebUI.Controllers
         }
         public async Task<IActionResult> ChangeStatusToTrue(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            await client.GetAsync($"https://localhost:7201/api/Discount/ChangeStatusToTrue/{id}");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            await client.GetAsync($"api/Discount/ChangeStatusToTrue/{id}");
             return RedirectToAction("Index");
         }
         public async Task<IActionResult> ChangeStatusToFalse(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            await client.GetAsync($"https://localhost:7201/api/Discount/ChangeStatusToFalse/{id}");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            await client.GetAsync($"api/Discount/ChangeStatusToFalse/{id}");
             return RedirectToAction("Index");
         }
     }

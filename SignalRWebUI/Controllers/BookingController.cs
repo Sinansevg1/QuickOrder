@@ -14,8 +14,8 @@ namespace SignalRWebUI.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7201/api/Booking");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.GetAsync("api/Booking");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -33,10 +33,10 @@ namespace SignalRWebUI.Controllers
         public async Task<IActionResult> CreateBooking(CreateBookingDto createBookingDto)
         {
             createBookingDto.Description=" Yeni Rezervasyon İsteği";
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("SignalRApi");
             var jsonData = JsonConvert.SerializeObject(createBookingDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7201/api/Booking", stringContent);
+            var responseMessage = await client.PostAsync("api/Booking", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -45,8 +45,8 @@ namespace SignalRWebUI.Controllers
         }
         public async Task<IActionResult> DeleteBooking(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7201/api/Booking/{id}");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.DeleteAsync($"api/Booking/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -56,8 +56,8 @@ namespace SignalRWebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateBooking(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7201/api/Booking/{id}");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.GetAsync($"api/Booking/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -69,10 +69,10 @@ namespace SignalRWebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateBooking(UpdateBookingDto updateBookingDto)
         {
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("SignalRApi");
             var jsonData = JsonConvert.SerializeObject(updateBookingDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7201/api/Booking", stringContent);
+            var responseMessage = await client.PutAsync("api/Booking", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -81,15 +81,15 @@ namespace SignalRWebUI.Controllers
         }
         public async Task<IActionResult> BookingStatusApproved(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-           await client.GetAsync($"https://localhost:7201/api/Booking/BookingStatusApproved/{id}");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+           await client.GetAsync($"api/Booking/BookingStatusApproved/{id}");
             return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> BookingStatusCancelled(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-           await client.GetAsync($"https://localhost:7201/api/Booking/BookingStatusCancelled/{id}");           
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+           await client.GetAsync($"api/Booking/BookingStatusCancelled/{id}");           
             return RedirectToAction("Index");
         }
     }

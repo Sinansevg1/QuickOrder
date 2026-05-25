@@ -52,8 +52,8 @@ namespace SignalRWebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteBasketAjax(int basketId, int menuTableId)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7201/api/Basket/{basketId}");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.DeleteAsync($"api/Basket/{basketId}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 return Json(new { success = true });
@@ -64,8 +64,8 @@ namespace SignalRWebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddSuggestedProduct(int productId, int menuTableId)
         {
-            var client = _httpClientFactory.CreateClient();
-            var basketCheckResponse = await client.GetAsync("https://localhost:7201/api/Basket/BasketListBtByMenuTablewithProductName?id=" + menuTableId);
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var basketCheckResponse = await client.GetAsync("api/Basket/BasketListBtByMenuTablewithProductName?id=" + menuTableId);
             if (basketCheckResponse.IsSuccessStatusCode)
             {
                 var currentBasketJson = await basketCheckResponse.Content.ReadAsStringAsync();
@@ -84,7 +84,7 @@ namespace SignalRWebUI.Controllers
 
             var jsonData = JsonConvert.SerializeObject(createBasketDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7201/api/Basket", stringContent);
+            var responseMessage = await client.PostAsync("api/Basket", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return Json(new { success = true, alreadyExists = false });
@@ -100,8 +100,8 @@ namespace SignalRWebUI.Controllers
                 TableId = tableId
             };
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7201/api/Basket/BasketListBtByMenuTablewithProductName?id=" + tableId);
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.GetAsync("api/Basket/BasketListBtByMenuTablewithProductName?id=" + tableId);
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -109,8 +109,8 @@ namespace SignalRWebUI.Controllers
                 pageModel.Baskets = values ?? new List<ResultBasketDto>();
             }
 
-            var recommendationClient = _httpClientFactory.CreateClient();
-            var recommendationResponse = await recommendationClient.GetAsync("https://localhost:7201/api/Recommendation/by-menu-table?id=" + tableId);
+            var recommendationClient = _httpClientFactory.CreateClient("SignalRApi");
+            var recommendationResponse = await recommendationClient.GetAsync("api/Recommendation/by-menu-table?id=" + tableId);
             if (recommendationResponse.IsSuccessStatusCode)
             {
                 var recommendationJson = await recommendationResponse.Content.ReadAsStringAsync();
