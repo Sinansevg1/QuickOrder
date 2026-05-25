@@ -11,11 +11,19 @@ namespace SignalR.DataAccessLayer.concrete
 {
     public class SignalRContext: IdentityDbContext<AppUser,AppRole,int>
     {
+        public SignalRContext() { }
+        public SignalRContext(DbContextOptions<SignalRContext> options) : base(options) { }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                "Server=localhost,1433;Database=SignalRDb;User Id=sa;Password=SinanSevgi47.;TrustServerCertificate=True");
+            if (optionsBuilder.IsConfigured) return;
 
+            var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+                ?? throw new InvalidOperationException(
+                    "Veritabanı bağlantı dizesi yapılandırılmamış. " +
+                    "'ConnectionStrings__DefaultConnection' ortam değişkenini ayarlayın.");
+
+            optionsBuilder.UseSqlServer(connectionString);
         }
         public DbSet<About>Abouts { get; set; }
         public DbSet<Booking>Bookings { get; set; }

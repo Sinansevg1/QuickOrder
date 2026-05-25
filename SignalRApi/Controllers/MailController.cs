@@ -8,6 +8,13 @@ namespace SignalRApi.Controllers
     [ApiController]
     public class MailController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
+
+        public MailController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         [HttpPost]
         public IActionResult SendMail([FromBody] SendMailRequest request)
         {
@@ -18,15 +25,23 @@ namespace SignalRApi.Controllers
                 return BadRequest("ReceiverMail, Subject ve Body zorunludur.");
             }
 
+            var senderMail = _configuration["MailSettings:SenderMail"]
+                ?? throw new InvalidOperationException("MailSettings:SenderMail yapılandırılmamış.");
+            var senderName = _configuration["MailSettings:SenderName"] ?? "S&S Restorant";
+            var password   = _configuration["MailSettings:Password"]
+                ?? throw new InvalidOperationException("MailSettings:Password yapılandırılmamış.");
+            var smtpHost   = _configuration["MailSettings:SmtpHost"] ?? "smtp.gmail.com";
+            var smtpPort   = _configuration.GetValue<int>("MailSettings:SmtpPort", 587);
+
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("S&S Restorant", "ss.deneme47@gmail.com"));
+            message.From.Add(new MailboxAddress(senderName, senderMail));
             message.To.Add(new MailboxAddress("", request.ReceiverMail));
             message.Subject = request.Subject;
             message.Body = new BodyBuilder { HtmlBody = request.Body }.ToMessageBody();
 
             using var client = new SmtpClient();
-            client.Connect("smtp.gmail.com", 587, false);
-            client.Authenticate("ss.deneme47@gmail.com", "mkyz kuax eikl tdbg");
+            client.Connect(smtpHost, smtpPort, false);
+            client.Authenticate(senderMail, password);
             client.Send(message);
             client.Disconnect(true);
 
