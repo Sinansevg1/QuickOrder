@@ -4,7 +4,19 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using SignalR.DataAccessLayer.concrete;
 using SignalR.EntityLayer.Entities;
 
+var rootEnvPath  = Path.Combine(Directory.GetCurrentDirectory(), "..", ".env");
+var localEnvPath = Path.Combine(Directory.GetCurrentDirectory(), ".env");
+var envConfig    = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+
+if (File.Exists(rootEnvPath))
+    LoadEnvVariables(rootEnvPath, envConfig);
+else if (File.Exists(localEnvPath))
+    LoadEnvVariables(localEnvPath, envConfig);
+
 var builder = WebApplication.CreateBuilder(args);
+
+if (envConfig.Count > 0)
+    builder.Configuration.AddInMemoryCollection(envConfig);
 
 var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 
@@ -12,6 +24,16 @@ var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticat
 builder.Services.AddDbContext<SignalRContext>();
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<SignalRContext>();
 
+var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl"]
+    ?? throw new InvalidOperationException("ApiSettings:BaseUrl yapılandırılmamış.");
+var apiKey = builder.Configuration["ApiSettings:ApiKey"] ?? "";
+
+builder.Services.AddHttpClient("SignalRApi", client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+    if (!string.IsNullOrEmpty(apiKey))
+        client.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
+});
 builder.Services.AddHttpClient();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -61,4 +83,23 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+static void LoadEnvVariables(string path, IDictionary<string, string?> configValues)
+{
+    foreach (var rawLine in File.ReadAllLines(path))
+    {
+        var line = rawLine.Trim();
+        if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#"))
+            continue;
+
+        var separatorIndex = line.IndexOf('=');
+        if (separatorIndex <= 0)
+            continue;
+
+        var key   = line[..separatorIndex].Trim();
+        var value = line[(separatorIndex + 1)..].Trim();
+        Environment.SetEnvironmentVariable(key, value);
+        configValues[key.Replace("__", ":", StringComparison.Ordinal)] = value;
+    }
+}
 

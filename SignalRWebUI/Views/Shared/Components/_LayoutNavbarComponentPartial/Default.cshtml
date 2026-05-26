@@ -1,3 +1,4 @@
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
@@ -9,7 +10,7 @@
 
 		$(document).ready(()=>{
 
-			var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7201/SignalRHub").build();
+			var connection = new signalR.HubConnectionBuilder().withUrl('@(Configuration["ApiSettings:SignalRHubUrl"])').build();
 			$("#connstatus").text(connection.state);
 			connection.start().then(()=> {
 				$("#connstatus").text(connection.state);

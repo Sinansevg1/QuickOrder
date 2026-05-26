@@ -14,8 +14,8 @@ namespace SignalRWebUI.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7201/api/MenuTables");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.GetAsync("api/MenuTables");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -33,10 +33,10 @@ namespace SignalRWebUI.Controllers
         public async Task<IActionResult> CreateMenuTable(CreateMenuTableDto createMenuTableDto)
         {
             createMenuTableDto.Status = false;
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("SignalRApi");
             var jsonData = JsonConvert.SerializeObject(createMenuTableDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7201/api/MenuTables", stringContent);
+            var responseMessage = await client.PostAsync("api/MenuTables", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -45,8 +45,8 @@ namespace SignalRWebUI.Controllers
         }
         public async Task<IActionResult> DeleteMenuTable(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7201/api/MenuTables/{id}");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.DeleteAsync($"api/MenuTables/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -56,8 +56,8 @@ namespace SignalRWebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateMenuTable(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7201/api/MenuTables/{id}");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.GetAsync($"api/MenuTables/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -69,10 +69,10 @@ namespace SignalRWebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateMenuTable(UpdateMenuTableDto updateMenuTableDto)
         {
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("SignalRApi");
             var jsonData = JsonConvert.SerializeObject(updateMenuTableDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7201/api/MenuTables", stringContent);
+            var responseMessage = await client.PutAsync("api/MenuTables", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -82,8 +82,8 @@ namespace SignalRWebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> TableListByStatus()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7201/api/MenuTables");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.GetAsync("api/MenuTables");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();

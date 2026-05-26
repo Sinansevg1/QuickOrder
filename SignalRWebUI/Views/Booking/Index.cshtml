@@ -1,3 +1,4 @@
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @model List<ResultBookingDto>
 @{
 	ViewData["Title"] = "Index";
@@ -17,7 +18,7 @@
 
             $(document).ready(()=>{
 
-                var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7201/SignalRHub").build();
+                var connection = new signalR.HubConnectionBuilder().withUrl('@(Configuration["ApiSettings:SignalRHubUrl"])').build();
                 $("#connstatus").text(connection.state);
                 connection.start().then(()=> {
                     $("#connstatus").text(connection.state);

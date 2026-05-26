@@ -14,8 +14,8 @@ namespace SignalRWebUI.ViewComponents.DefaultComponent
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7201/api/About");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.GetAsync("api/About");
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<List<ResultAboutDto>>(jsonData);
             return View(values);

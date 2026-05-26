@@ -16,8 +16,8 @@ namespace SignalRWebUI.ViewComponents.UILayoutComponents
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7201/api/SocialMedia");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.GetAsync("api/SocialMedia");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();

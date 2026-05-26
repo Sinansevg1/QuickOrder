@@ -6,30 +6,36 @@ namespace SignalRWebUI.Controllers
 {
     public class FoodRapidApiController : Controller
     {
+        private readonly IConfiguration _configuration;
+
+        public FoodRapidApiController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public async Task<IActionResult> Index()
         {
+            var apiKey  = _configuration["RapidApi:Key"]
+                ?? throw new InvalidOperationException("RapidApi:Key yapılandırılmamış.");
+            var apiHost = _configuration["RapidApi:Host"] ?? "tasty.p.rapidapi.com";
 
             var client = new HttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("https://tasty.p.rapidapi.com/recipes/list?from=0&size=60&tags=under_30_minutes"),
+                RequestUri = new Uri($"https://{apiHost}/recipes/list?from=0&size=60&tags=under_30_minutes"),
                 Headers =
-    {
-        { "x-rapidapi-key", "cfe8e77a05msha02cd785eb19976p19bedejsnb01bff0e3789" },
-        { "x-rapidapi-host", "tasty.p.rapidapi.com" },
-    },
+                {
+                    { "x-rapidapi-key",  apiKey  },
+                    { "x-rapidapi-host", apiHost },
+                },
             };
-            using (var response = await client.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-               // var values=JsonConvert.DeserializeObject<List<ResultTastyApi>>(body);
-               // return View(values.ToList());
-               var root = JsonConvert.DeserializeObject<RootTastyApi>(body);
-                return View(root.Results.ToList());
-            }
-            
+
+            using var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var body = await response.Content.ReadAsStringAsync();
+            var root = JsonConvert.DeserializeObject<RootTastyApi>(body);
+            return View(root!.Results.ToList());
         }
     }
 }

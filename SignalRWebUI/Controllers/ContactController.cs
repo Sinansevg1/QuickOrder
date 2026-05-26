@@ -13,8 +13,8 @@ namespace SignalRWebUI.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7201/api/Contact");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.GetAsync("api/Contact");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -31,10 +31,10 @@ namespace SignalRWebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateContact(CreateContactDto createContactDto)
         {
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("SignalRApi");
             var jsonData = JsonConvert.SerializeObject(createContactDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7201/api/Contact", stringContent);
+            var responseMessage = await client.PostAsync("api/Contact", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -43,8 +43,8 @@ namespace SignalRWebUI.Controllers
         }
         public async Task<IActionResult> DeleteContact(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7201/api/Contact/{id}");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.DeleteAsync($"api/Contact/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
@@ -54,8 +54,8 @@ namespace SignalRWebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateContact(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7201/api/Contact/{id}");
+            var client = _httpClientFactory.CreateClient("SignalRApi");
+            var responseMessage = await client.GetAsync($"api/Contact/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -67,10 +67,10 @@ namespace SignalRWebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateContact(UpdateContactDto  updateContactDto)
         {
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("SignalRApi");
             var jsonData = JsonConvert.SerializeObject(updateContactDto );
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7201/api/Contact", stringContent);
+            var responseMessage = await client.PutAsync("api/Contact", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
